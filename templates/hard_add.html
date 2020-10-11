@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>celery</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+
+<body>
+<div class="x-body">
+    <div class="form-group" id="task_form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>值
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="task_name"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">
+                <span class="x-red">*</span>任务类型
+            </label>
+            <div class="layui-input-inline">
+                <select name="task_type" class="layui-input">
+                    <option value="">类型</option>
+                    <option value="0">int</option>
+                    <option value="0">str</option>
+                </select>
+            </div>
+            <button class="layui-btn-danger layui-btn" onclick="onDelete(this)">删除</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">
+        </label>
+        <button class="layui-btn" id="add_btn">
+            增加单元格
+        </button>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">
+        </label>
+        <button class="layui-btn">
+            提交表单
+        </button>
+    </div>
+</div>
+</body>
+<script>
+    var html_template = `
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>值
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="task_name"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">
+                <span class="x-red">*</span>任务类型
+            </label>
+            <div class="layui-input-inline">
+                <select name="task_type" class="layui-input">
+                    <option value="">类型</option>
+                    <option value="0">int</option>
+                    <option value="0">str</option>
+                </select>
+            </div>
+            <button class="layui-btn-danger layui-btn" onclick="onDelete(this)">删除</button>
+        </div>
+    `
+    $(function () {
+        var task_form = $("#task_form");
+        $("#add_btn").click(function () {
+            task_form.append(html_template)
+        })
+    })
+    function onDelete(e){
+        var btn = $(e);
+        btn.parent().remove()
+    }
+</script>
+</html>
