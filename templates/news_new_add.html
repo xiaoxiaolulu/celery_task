@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-
+  
   <head>
     <meta charset="UTF-8">
-    <title>分类添加</title>
+    <title>数据导入</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -15,31 +15,20 @@
     <script src="{% static 'lib/layui/layui.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/xadmin.js' %}"></script>
   </head>
-
+  
   <body>
     <div class="x-body">
-          <form class="layui-form" action="{% url 'news:add_category' %}" method="post">
-              {% csrf_token %}
+          <form class="layui-form" action="{% url 'news:add_new' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
               <div class="layui-form-item">
-              <label for="category_name" class="layui-form-label">
-                  <span class="x-red">*</span>分类名称
+              <label for="name" class="layui-form-label">
+                  <span class="x-red">*</span>导入数据
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="cate_name" name="category_name"
+                  <input type="file" id="exc_file" name="exc_file"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
-
-            <div class="layui-form-item">
-                <label for="category_desc" class="layui-form-label">
-                    分类描述
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="cate_desc" name="category_desc"
-                           autocomplete="off" class="layui-input">
-                </div>
-            </div>
-
 
           <div class="layui-form-item">
               <label class="layui-form-label">
