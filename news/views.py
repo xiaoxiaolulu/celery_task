@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 
 
@@ -16,3 +17,12 @@ def new_list(request):
 
 def welcome(request):
     return render(request, 'welcome.html')
+
+
+def add_category(request):
+
+    if request.method == 'GET':
+        return render(request, 'news_category_add.html')
+
+    if request.method == 'POST':
+        return JsonResponse({"code": 200, "msg": "添加成功"})
