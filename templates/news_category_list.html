@@ -1,45 +1,42 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>celery</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
     <link rel="stylesheet" href="{% static 'css/font.css' %}">
     <link rel="stylesheet" href="{% static 'css/xadmin.css' %}">
     <link rel="icon" href="{% static 'images/zlkt.ico' %}" type="image/x-icon"/>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="{% static 'lib/layui/layui.js' %}" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'js/xadmin.js' %}"></script>
-  </head>
-  <body>
-    <div class="x-nav">
+</head>
+<body>
+<div class="x-nav">
       <span class="layui-breadcrumb">
-        <a href="/">首页</a>
+        <a href="">首页</a>
+        <a href="">权限管理</a>
         <a>
-          <cite>数据导入实战</cite>
-        </a>
-        <a>
-          <cite>分类列表</cite>
-        </a>
+          <cite>权限列表</cite></a>
       </span>
-      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-    </div>
-    <div class="x-body">
-      <xblock>
-        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
-        <button class="layui-btn" onclick="x_admin_show('添加分类','{% url 'news:add_category' %}')"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
-      </xblock>
-      <table class="layui-table">
+</div>
+<div class="x-body">
+    <xblock>
+        <button class="layui-btn" onclick="x_admin_show('添加分类','{% url "news:add_category" %}')"><i
+                class="layui-icon"></i>添加
+        </button>
+        <span class="x-right" style="line-height:40px">共有数据：{{ count }} 条</span>
+    </xblock>
+    <table class="layui-table">
         <thead>
-          <tr>
-            <!--<th>-->
-              <!--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>-->
-            <!--</th>-->
+        <tr>
             <th>ID</th>
             <th>分类名称</th>
             <th>分类描述</th>
@@ -47,95 +44,76 @@
             <th>操作</th>
         </thead>
         <tbody>
-          <tr>
-            <!--<td>-->
-              <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>-->
-            <!--</td>-->
-            <td>1</td>
-            <td>test</td>
-            <td>这是一个测试的任务</td>
-            <td>2019-10-21 24:44:20</td>
+        {% for newsCategory in newsCategorys %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ newsCategory.name }}</td>
+                <td>{{ newsCategory.desc }}</td>
+                <td>{{ newsCategory.c_time|date:"Y/m/d H:i:s" }}</td>
 
-            <td class="td-manage">
-                <a title="查看"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
-                    <i class="layui-icon">&#xe63c;</i>
-                </a>
-                <!--<a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">-->
+                <td class="td-manage">
+                    <a title="查看" onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
+                        <i class="layui-icon">&#xe63c;</i>
+                    </a>
+                    <!--<a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">-->
                     <!--<i class="layui-icon">&#xe601;</i>-->
-                <!--</a>-->
-              <a title="编辑"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon x-red">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+                    <!--</a>-->
+                    <a title="编辑" onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                        <i class="layui-icon x-red">&#xe640;</i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
 
         </tbody>
-      </table>
-      <div class="page">
+    </table>
+    {#    分页#}
+    <div class="page">
         <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
+            {#上一页#}
+            {% if page_obj.has_previous %}
+                <a class="prev" href="{% url 'news:category_list' %}?p={{ page_obj.previous_page_number }}"><<</a>
+            {% else %}
+                <a class="prev" href="javascript:void(0);" style="cursor: not-allowed"><<</a>
+            {% endif %}
+            {% if left_has_more %}
+                <a class="prev" href="{% url 'news:category_list' %}?p=1">1</a>
+                <a class="prev" href="javascript:void(0);">...</a>
+            {% endif %}
+
+            {# 左边的页码 #}
+            {% for left_page in left_pages %}
+                <a class="num" href="{% url 'news:category_list' %}?p={{ left_page }}">{{ left_page }}</a>
+            {% endfor %}
+            {# 当前的页码#}
+            <span class="current">{{ current_page }}</span>
+            {#<a href="{% url 'menu_manage:menu_list' %}?p={{ current_page }}" class="current">{{ current_page }}</a>#}
+
+            {# 右边的页码 #}
+            {% for right_page in right_pages %}
+                <a class="num" href="{% url 'news:category_list' %}?p={{ right_page }}">{{ right_page }}</a>
+            {% endfor %}
+
+            {% if right_has_more %}
+                <a class="num" href="javascript:void(0);">...</a>
+                <a class="num" href="{% url 'news:category_list' %}?p={{ num_pages }}">{{ num_pages }}</a>
+            {% endif %}
+            {#下一页#}
+            {% if page_obj.has_next %}
+                <a class="next" href="{% url 'news:category_list' %}?p={{ page_obj.next_page_number }}">&gt;&gt;</a>
+            {% else %}
+                <a class="disabled next" href="javascript:void(0);" style="cursor: not-allowed">&gt;&gt;</a>
+            {% endif %}
+
+
         </div>
-      </div>
-
     </div>
-    <script>
 
-       /*用户-停用*/
-      function member_stop(obj,id){
-          var x = $(obj).attr('title')?'启用':'停用'
-          var message = '确定要' + x + '么？'
-          layer.confirm(message,function(index){
-
-              if($(obj).attr('title')==='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-
-          });
-      }
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
-          });
-      }
-
-
-
-      function delAll (argument) {
-
-        var data = tableCheck.getData();
-
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
-      }
-    </script>
-  </body>
+</div>
+</body>
 
 </html>
