@@ -1,10 +1,11 @@
 import os
-# import pandas as pd
+import pandas as pd
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 from celery_task.settings import BASE_DIR
 from news.models import NewsCategory, News
+from news.tasks import data_new
 
 
 def main(request):
@@ -37,7 +38,9 @@ def add_news(request):
         for chunk in file.chunks():
             stream.write(chunk)
         stream.close()
-        # df = pd.read_excel(f"{BASE_DIR}/medias/excel_files/{file.name}")
+        df = pd.read_excel(f"{BASE_DIR}/medias/excel_files/{file.name}")
+
+        data_new.delay(df)
         return JsonResponse({"code": 200, "msg": "导入数据成功"})
 
 

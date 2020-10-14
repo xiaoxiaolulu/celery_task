@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from celery import Celery
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -23,10 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4=dzpr0w-b6+n-itq#-!7blt72#f2%4_ddp0vpgd1ncbh89ltd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["106.54.238.180", "127.0.0.1", "*"]
-
 
 # Application definition
 
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'books',
     'news',
-    'task_config'
+    'task_config',
+    'djcelery'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'celery_task.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -87,7 +87,6 @@ DATABASES = {
         'PASSWORD': '123456.a'
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -107,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -122,7 +120,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -134,3 +131,27 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')
 MEDIA_URL = '/medias/'
+
+import djcelery
+
+djcelery.setup_loader()
+
+BROKER_URL = 'redis://106.54.238.180:6379/1'
+CELERY_RESULT_BACKEND = 'redis://106.54.238.180:6379/2'
+
+from kombu import Queue
+
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_DEFAULT_QUEUE = 'worker_queue'
+
+CELERY_QUEUE = (
+    Queue('worker_queue', routing_key='worker_queue'),
+)
+
+app = Celery('tasks', backend=BROKER_URL, broker=CELERY_RESULT_BACKEND)
+# app.conf.CELERY_TASK_SERIALIZER='json'
+# app.conf.CELERY_ACCEPT_CONTENT=['json']
+app.conf.update(
+    CELERY_TASK_SERIALIZER='json',
+    CELERY_ACCEPT_CONTENT=['json'],
+    CELERY_RESULT_SERIALIZER='json')
