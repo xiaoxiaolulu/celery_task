@@ -31,7 +31,7 @@
     <div class="x-body">
       <xblock>
         <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
-        <button class="layui-btn" onclick="x_admin_show('添加任务','book_add.html')"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加任务','{% url 'books:to_add_book' %}')"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px">共有数据：88 条</span>
       </xblock>
       <table class="layui-table">
@@ -47,41 +47,73 @@
             <th>操作</th>
         </thead>
         <tbody>
-          <tr>
-            <!--<td>-->
-              <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>-->
-            <!--</td>-->
-            <td>1</td>
-            <td>test</td>
-            <td>发布时间</td>
-            <td>2019-10-21 24:44:20</td>
-            <td class="td-manage">
-                <a title="查看"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
-                    <i class="layui-icon">&#xe63c;</i>
-                </a>
-                <!--<a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">-->
-                    <!--<i class="layui-icon">&#xe601;</i>-->
-                <!--</a>-->
-              <a title="编辑"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon x-red">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+
+            {% for book in books %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.content }}</td>
+                    <td>{{ book.c_time|date:"Y/m/d H:i:s"}}</td>
+                    <td class="td-manage">
+                        <a title="查看"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
+                            <i class="layui-icon">&#xe63c;</i>
+                        </a>
+                        <!--<a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">-->
+                            <!--<i class="layui-icon">&#xe601;</i>-->
+                        <!--</a>-->
+                      <a title="编辑"  onclick="x_admin_show('编辑','one_add.html')" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
+                      </a>
+                      <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                        <i class="layui-icon x-red">&#xe640;</i>
+                      </a>
+                    </td>
+                  </tr>
+            {% endfor %}
+
+
 
         </tbody>
       </table>
       <div class="page">
         <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
-        </div>
+                {#上一页#}
+                {% if page_obj.has_previous %}
+                    <a class="prev" href="{% url 'books:book_list' %}?p={{ page_obj.previous_page_number }}"><<</a>
+                {% else %}
+                    <a class="prev" href="javascript:void(0);" style="cursor: not-allowed"><<</a>
+                {% endif %}
+                {% if left_has_more %}
+                    <a class="prev" href="{% url 'books:book_list' %}?p=1">1</a>
+                    <a class="prev" href="javascript:void(0);">...</a>
+                {% endif %}
+
+                {# 左边的页码 #}
+                {% for left_page in left_pages %}
+                    <a class="num" href="{% url 'books:book_list' %}?p={{ left_page }}">{{ left_page }}</a>
+                {% endfor %}
+                {# 当前的页码#}
+                <span class="current">{{ current_page }}</span>
+                {#<a href="{% url 'menu_manage:menu_list' %}?p={{ current_page }}" class="current">{{ current_page }}</a>#}
+
+                {# 右边的页码 #}
+                {% for right_page in right_pages %}
+                    <a class="num" href="{% url 'books:book_list' %}?p={{ right_page }}">{{ right_page }}</a>
+                {% endfor %}
+
+                {% if right_has_more %}
+                    <a class="num" href="javascript:void(0);">...</a>
+                    <a class="num" href="{% url 'books:book_list' %}?p={{ num_pages }}">{{ num_pages }}</a>
+                {% endif %}
+                {#下一页#}
+                {% if page_obj.has_next %}
+                    <a class="next" href="{% url 'books:book_list' %}?p={{ page_obj.next_page_number }}">&gt;&gt;</a>
+                {% else %}
+                    <a class="disabled next" href="javascript:void(0);" style="cursor: not-allowed">&gt;&gt;</a>
+                {% endif %}
+
+
+            </div>
       </div>
 
     </div>
