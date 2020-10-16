@@ -3,13 +3,19 @@ import pandas as pd
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
+
+from books.models import BookPush
 from celery_task.settings import BASE_DIR
 from news.models import NewsCategory, News
 from news.tasks import data_new
 
 
 def main(request):
-    return render(request, 'index.html')
+    count = BookPush.objects.count()
+    context = {
+        'count': count
+    }
+    return render(request, 'index.html', context=context)
 
 
 def welcome(request):

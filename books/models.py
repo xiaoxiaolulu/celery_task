@@ -7,6 +7,7 @@ class Book(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64)
     content = models.CharField(max_length=255)
+    count = models.IntegerField(blank=True, null=True, default=1)
     c_time = models.DateTimeField(default=datetime.now())
 
     class Meta:

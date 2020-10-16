@@ -5,6 +5,8 @@ from books.models import Book
 
 
 def to_add_book(request):
+    from .tasks import push_book
+    push_book()
     return render(request, 'book_add.html')
 
 

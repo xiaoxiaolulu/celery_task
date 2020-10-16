@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import timedelta
+
 from celery import Celery
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4=dzpr0w-b6+n-itq#-!7blt72#f2%4_ddp0vpgd1ncbh89ltd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["106.54.238.180", "127.0.0.1", "*"]
 
@@ -155,3 +157,13 @@ CELERY_QUEUE = (
 #     CELERY_TASK_SERIALIZER='json',
 #     CELERY_ACCEPT_CONTENT=['json'],
 #     CELERY_RESULT_SERIALIZER='json')
+
+CELERYBEAT_SCHEDULE = {
+    'my_beat': {
+        'task': 'books.tasks.push_book',
+        'schedule': timedelta(seconds=5),
+        'options': {
+            'queue': 'worker_queue',
+        }
+    }
+}
