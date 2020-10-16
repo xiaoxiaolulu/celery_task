@@ -1,4 +1,4 @@
-from celery_task.settings import app
+# from celery_task.settings import app
 from news.models import NewsCategory, News
 from celery import task, platforms
 
@@ -7,7 +7,7 @@ platforms.C_FORCE_ROOT = True
 # python3 manage.py celery worker -l INFO
 
 
-@app.task
+@task
 def data_new(df):
     df['category_id'] = df.apply(lambda x: sr_new(x['category']), axis=1)
     print(df)
@@ -15,8 +15,8 @@ def data_new(df):
     from sqlalchemy import create_engine
     df = df[['title', 'url', 'ctime', 'category_id']]
     df = df.rename(columns={'ctime': 'new_time'})
-    # conn = create_engine('mysql+pymysql://root:123456.a@127.0.0.1:3306/celerytask?charset=utf8', )
-    # df.to_sql('news_new', conn, index=False, if_exists='append')
+    conn = create_engine('mysql+pymysql://root:123456.a@localhost:3306/celerytask?charset=utf8', )
+    df.to_sql('news_new', conn, index=False, if_exists='append')
     for idx, row in df.iterrows():
         title = row['title']
         url = row['url']

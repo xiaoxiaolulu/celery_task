@@ -148,10 +148,10 @@ CELERY_QUEUE = (
     Queue('worker_queue', routing_key='worker_queue'),
 )
 
-app = Celery('tasks', backend=BROKER_URL, broker=CELERY_RESULT_BACKEND)
-# app.conf.CELERY_TASK_SERIALIZER='json'
-# app.conf.CELERY_ACCEPT_CONTENT=['json']
-app.conf.update(
-    CELERY_TASK_SERIALIZER='json',
-    CELERY_ACCEPT_CONTENT=['json'],
-    CELERY_RESULT_SERIALIZER='json')
+# app = Celery('tasks', backend=BROKER_URL, broker=CELERY_RESULT_BACKEND)
+# # app.conf.CELERY_TASK_SERIALIZER='json'
+# # app.conf.CELERY_ACCEPT_CONTENT=['json']
+# app.conf.update(
+#     CELERY_TASK_SERIALIZER='json',
+#     CELERY_ACCEPT_CONTENT=['json'],
+#     CELERY_RESULT_SERIALIZER='json')
