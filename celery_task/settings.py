@@ -83,10 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'celerytask',
-        'HOST': '127.0.0.1',
+        'HOST': '106.54.238.180',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': '123456.a'
+        'PASSWORD': '1234'
     },
 }
 
@@ -158,12 +158,5 @@ CELERY_QUEUE = (
 #     CELERY_ACCEPT_CONTENT=['json'],
 #     CELERY_RESULT_SERIALIZER='json')
 
-CELERYBEAT_SCHEDULE = {
-    'my_beat': {
-        'task': 'books.tasks.push_book',
-        'schedule': timedelta(seconds=5),
-        'options': {
-            'queue': 'worker_queue',
-        }
-    }
-}
+
+from celery_task.task_cron_conf import *

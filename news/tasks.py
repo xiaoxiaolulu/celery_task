@@ -15,8 +15,8 @@ def data_new(df):
     from sqlalchemy import create_engine
     df = df[['title', 'url', 'ctime', 'category_id']]
     df = df.rename(columns={'ctime': 'new_time'})
-    conn = create_engine('mysql+pymysql://root:123456.a@localhost:3306/celerytask?charset=utf8', )
-    df.to_sql('news_new', conn, index=False, if_exists='append')
+    # conn = create_engine('mysql+pymysql://root:123456.a@localhost:3306/celerytask?charset=utf8', )
+    # df.to_sql('news_new', conn, index=False, if_exists='append')
     for idx, row in df.iterrows():
         title = row['title']
         url = row['url']
