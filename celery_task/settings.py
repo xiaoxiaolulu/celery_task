@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4=dzpr0w-b6+n-itq#-!7blt72#f2%4_ddp0vpgd1ncbh89ltd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["106.54.238.180", "127.0.0.1", "*"]
 
@@ -54,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 ROOT_URLCONF = 'celery_task.urls'
 
@@ -86,7 +88,7 @@ DATABASES = {
         'HOST': '106.54.238.180',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': '1234'
+        'PASSWORD': '123456'
     },
 }
 

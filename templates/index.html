@@ -87,9 +87,15 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="{% url 'task_config:config' %}">
+                        <a _href="{% url 'task_config:config_list' %}">
                             <i class="iconfont">&#xe6ce;</i>
                             <cite>任务配置</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="{% url 'task_config:tasks_queue_conf_list' %}">
+                            <i class="iconfont">&#xe6ce;</i>
+                            <cite>队列配置</cite>
                         </a>
                     </li>
                     <!--<li>-->
